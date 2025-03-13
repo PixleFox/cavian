@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 246.25 276.68">
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g>
+      <circle cx="14.5" cy="138.17" r="14.5"/>
+      <circle cx="231.52" cy="138.17" r="14.5"/>
+      <g>
+        <ellipse cx="191.75" cy="213.73" rx="24.66" ry="79.5" transform="translate(-92.52 173.26) rotate(-40)"/>
+        <ellipse cx="54.93" cy="62.95" rx="24.66" ry="79.5" transform="translate(-27.61 50.03) rotate(-40)"/>
+        <ellipse cx="191.75" cy="62.95" rx="79.5" ry="24.66" transform="translate(20.28 169.38) rotate(-50)"/>
+        <ellipse cx="54.93" cy="213.73" rx="79.5" ry="24.66" transform="translate(-144.11 118.42) rotate(-50)"/>
+      </g>
+    </g>
+  </g>
+</svg>
