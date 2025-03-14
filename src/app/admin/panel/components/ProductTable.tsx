@@ -1,9 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
 import React from 'react';
-import ProductForm from './ProductForm';
 import { FaEdit, FaTrash, FaEye, FaEyeSlash } from 'react-icons/fa';
-import Image from 'next/image'; // Import Next.js Image component
+import Image from 'next/image';
 
 // Define Variant interface
 interface Variant {
@@ -85,8 +84,6 @@ const formatPrice = (value: number | string) => {
 export default function ProductTable({ products, onEdit, onDelete }: ProductTableProps) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [productToDelete, setProductToDelete] = useState<number | null>(null);
-  const [showEditForm, setShowEditForm] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(false);
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
   const [sortConfig, setSortConfig] = useState<{ field: string | null; order: 'asc' | 'desc' | null }>({
@@ -134,19 +131,10 @@ export default function ProductTable({ products, onEdit, onDelete }: ProductTabl
     setProductToDelete(null);
   };
 
-  const handleEditClick = (product: Product) => {
-    setSelectedProduct(product);
-    setShowEditForm(true);
-    onEdit(product); // Invoke onEdit to notify parent component
-  };
-
-  const closeEditForm = () => {
-    setShowEditForm(false);
-    setSelectedProduct(null);
-  };
-
-  const refreshProducts = async () => {
-    closeEditForm();
+  const handleEditClick = (e: React.MouseEvent<HTMLButtonElement>, product: Product) => {
+    e.preventDefault(); // Prevent any default behavior
+    e.stopPropagation(); // Stop event bubbling
+    onEdit(product); // Trigger parent’s onEdit to show the form
   };
 
   const toggleRow = (productId: number) => {
@@ -327,7 +315,8 @@ export default function ProductTable({ products, onEdit, onDelete }: ProductTabl
                     </td>
                     <td className="px-4 py-4 space-x-2">
                       <button
-                        onClick={() => handleEditClick(product)}
+                        type="button"
+                        onClick={(e) => handleEditClick(e, product)}
                         className="transition-all duration-200 hover:scale-110"
                         style={{ color: 'var(--primary)' }}
                         title="ویرایش"
@@ -335,6 +324,7 @@ export default function ProductTable({ products, onEdit, onDelete }: ProductTabl
                         <FaEdit />
                       </button>
                       <button
+                        type="button"
                         onClick={() => handleDelete(product.id)}
                         className="transition-all duration-200 hover:scale-110"
                         style={{ color: 'var(--error)' }}
@@ -345,6 +335,7 @@ export default function ProductTable({ products, onEdit, onDelete }: ProductTabl
                     </td>
                     <td className="px-4 py-4">
                       <button
+                        type="button"
                         onClick={() => toggleRow(product.id)}
                         className="transition-all duration-200 hover:scale-110"
                         style={{ color: 'var(--accent)' }}
@@ -444,6 +435,7 @@ export default function ProductTable({ products, onEdit, onDelete }: ProductTabl
             </p>
             <div className="flex justify-end gap-4">
               <button
+                type="button"
                 onClick={cancelDelete}
                 className="px-4 py-2 rounded-lg transition-all duration-200 glow-button"
                 style={{
@@ -455,6 +447,7 @@ export default function ProductTable({ products, onEdit, onDelete }: ProductTabl
                 لغو
               </button>
               <button
+                type="button"
                 onClick={confirmDelete}
                 className="px-4 py-2 rounded-lg transition-all duration-200 glow-button"
                 style={{
@@ -468,14 +461,6 @@ export default function ProductTable({ products, onEdit, onDelete }: ProductTabl
             </div>
           </div>
         </div>
-      )}
-
-      {showEditForm && (
-        <ProductForm
-          onClose={closeEditForm}
-          refreshProducts={refreshProducts}
-          product={selectedProduct}
-        />
       )}
     </>
   );

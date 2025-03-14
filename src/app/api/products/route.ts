@@ -1,4 +1,3 @@
-// src/app/api/products/route.ts
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import fs from 'fs/promises';
@@ -114,6 +113,19 @@ export async function POST(request: Request) {
 
     const variants = fields.variants ? (JSON.parse(fields.variants) as ProductVariant[]) : [];
     if (variants.length === 0) errors.variants = 'حداقل یک متغیر الزامی است';
+
+    // Validate variants
+    for (const variant of variants) {
+      const stock = Number(variant.stock);
+      const price = Number(variant.price);
+
+      if (isNaN(stock) || stock < 0 || stock > 99999999.99) {
+        errors[`variant_stock_${variant.size}_${variant.color}`] = `موجودی باید بین 0 و 99,999,999.99 باشد (دریافت شده: ${variant.stock})`;
+      }
+      if (isNaN(price) || price < 0 || price > 99999999.99) {
+        errors[`variant_price_${variant.size}_${variant.color}`] = `قیمت باید بین 0 و 99,999,999.99 باشد (دریافت شده: ${variant.price})`;
+      }
+    }
 
     if (Object.keys(errors).length > 0) {
       return NextResponse.json({ error: 'خطا در داده‌های ورودی', details: errors }, { status: 400 });
@@ -260,6 +272,19 @@ export async function PUT(request: Request) {
 
     const variants = fields.variants ? (JSON.parse(fields.variants) as ProductVariant[]) : [];
     if (variants.length === 0) errors.variants = 'حداقل یک متغیر الزامی است';
+
+    // Validate variants for PUT as well
+    for (const variant of variants) {
+      const stock = Number(variant.stock);
+      const price = Number(variant.price);
+
+      if (isNaN(stock) || stock < 0 || stock > 99999999.99) {
+        errors[`variant_stock_${variant.size}_${variant.color}`] = `موجودی باید بین 0 و 99,999,999.99 باشد (دریافت شده: ${variant.stock})`;
+      }
+      if (isNaN(price) || price < 0 || price > 99999999.99) {
+        errors[`variant_price_${variant.size}_${variant.color}`] = `قیمت باید بین 0 و 99,999,999.99 باشد (دریافت شده: ${variant.price})`;
+      }
+    }
 
     if (Object.keys(errors).length > 0) {
       return NextResponse.json({ error: 'خطا در داده‌های ورودی', details: errors }, { status: 400 });
