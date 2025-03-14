@@ -245,7 +245,7 @@ export default function ProductTable({ products, onEdit, onDelete }: ProductTabl
               >
                 تخفیف {getSortIndicator('discount_percent')}
               </th>
-              <th className="px-4 py-3 font-medium">'گاییدن'</th>
+              <th className="px-4 py-3 font-medium">عملیات</th>
               <th className="px-4 py-3 font-medium">متغیرها</th>
             </tr>
           </thead>
